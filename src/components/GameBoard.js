@@ -2,7 +2,7 @@ import React from 'react';
 
 class GameBoard extends React.Component {
   state = {
-    spaces: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    spaces: [],
     alert: null,
     player1: false,
     playerTurn: '',
@@ -35,14 +35,26 @@ class GameBoard extends React.Component {
         player1turn = true
       }
     }
-    // console.log(playerTurn, squareId, samePick)
-    // console.log(playerPicks)
+    console.log(playerTurn, squareId, samePick)
+    console.log(playerPicks)
     this.setState({
       player1: player1turn,
       playerTurn: playerTurn,
       player1Icon: player1Icon,
       player2Icon: player2Icon
     })
+  }
+
+  spacesGenerator = (item, times) => {
+    let { spaces } = this.state
+    for(let i = 0; i < times; i++) {
+      spaces.push(item)
+      this.setState({ spaces: spaces })
+    }
+  }
+
+  componentDidMount = () => {
+    this.spacesGenerator('', 60)
   }
 
   render() {
