@@ -2,7 +2,7 @@ import React from 'react';
 
 class GameBoard extends React.Component {
   state = {
-    spaces: [],
+    spaces: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
     alert: null,
     player1: false,
     player2: false,
@@ -11,18 +11,23 @@ class GameBoard extends React.Component {
   }
 
   click = (event) => {
+    let id = parseInt(event.target.id)
     let { player1, player2, playerTurn, playerPicks } = this.state
     let player1turn = player1 === true ? false : true
+    let samePick = playerPicks.filter((pick) => {
+      return pick === id
+    })
     if(player1turn === true) {
       player2 = false
       playerTurn = "Player 1 clicked"
-      playerPicks.push(event.target.id)
+      playerPicks.push(id)
     } else {
       player2 = true
       playerTurn = "Player 2 clicked"
-      playerPicks.push(event.target.id)
+      playerPicks.push(id)
     }
-    console.log(event.target.id)
+    console.log(playerTurn, id, samePick)
+    console.log(playerPicks)
     this.setState({
       player1: player1turn,
       player2: player2,
@@ -48,8 +53,6 @@ class GameBoard extends React.Component {
         <div className='tiles' key={index} id={index}>{value}</div>
       )
     })
-
-    console.log(this.state.playerTurn, this.state.playerPicks)
 
     return (
       <div>
