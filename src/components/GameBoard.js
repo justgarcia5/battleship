@@ -2,62 +2,60 @@ import React from 'react';
 
 class GameBoard extends React.Component {
   state = {
-    spaces: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    spaces: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
     alert: null,
     player1: false,
-    player2: false,
     playerTurn: '',
     playerPicks: [],
+    player1Icon: 'P1',
+    player2Icon: 'P2'
   }
 
-  click = (event) => {
-    let id = parseInt(event.target.id)
-    let { player1, player2, playerTurn, playerPicks } = this.state
+  userClick = (event) => {
+    let squareId = parseInt(event.target.id)
+    let { player1, playerTurn, playerPicks, player1Icon, player2Icon, spaces } = this.state
     let player1turn = player1 === true ? false : true
-    let samePick = playerPicks.filter((pick) => {
-      return pick === id
-    })
+    let samePick = playerPicks.filter((pick) => pick === squareId)
     if(player1turn === true) {
-      player2 = false
-      playerTurn = "Player 1 clicked"
-      playerPicks.push(id)
+      if(!samePick.includes(squareId)) {
+        playerTurn = "Player 1 clicked"
+        playerPicks.push(squareId)
+        spaces[squareId] = player1Icon
+      } else {
+        player1turn = false
+        playerTurn = "Player 1 clicked"
+      }
     } else {
-      player2 = true
-      playerTurn = "Player 2 clicked"
-      playerPicks.push(id)
+      if(!samePick.includes(squareId)) {
+        playerTurn = "Player 2 clicked"
+        playerPicks.push(squareId)
+        spaces[squareId] = player2Icon
+      } else {
+        playerTurn = "Player 2 clicked"
+        player1turn = true
+      }
     }
-    console.log(playerTurn, id, samePick)
-    console.log(playerPicks)
+    // console.log(playerTurn, squareId, samePick)
+    // console.log(playerPicks)
     this.setState({
       player1: player1turn,
-      player2: player2,
-      playerTurn: playerTurn
+      playerTurn: playerTurn,
+      player1Icon: player1Icon,
+      player2Icon: player2Icon
     })
-  }
-
-  componentDidMount = () => {
-    this.spacesGenerator()
-  }
-
-  spacesGenerator = () => {
-    let { spaces } = this.state
-    let tile = ''
-    spaces.push(tile)
-    this.setState({ spaces: spaces})
   }
 
   render() {
     let { spaces } = this.state
     let squares = spaces.map((value, index) => {
       return(
-        <div className='tiles' key={index} id={index}>{value}</div>
+        <div className='tiles' key={index} id={index} onClick={this.userClick.bind(this)}>{value}</div>
       )
     })
-
     return (
       <div>
         <div>{this.state.alert}</div>
-        <div className='grid' onClick={this.click.bind(this)}>{squares}</div>
+        <div className='grid'>{squares}</div>
       </div>
     );
   }
