@@ -8,7 +8,9 @@ class GameBoard extends React.Component {
     playerTurn: '',
     playerPicks: [],
     player1Icon: 'P1',
-    player2Icon: 'P2'
+    player2Icon: 'P2',
+    player1Ships: [],
+    player2Ships: [],
   }
 
   userClick = (event) => {
@@ -53,8 +55,30 @@ class GameBoard extends React.Component {
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount = (event) => {
     this.spacesGenerator('', 60)
+    this.getPlayerShips()
+  }
+
+  getPlayerShips = (event) => {
+    let { player1Ships, player2Ships } = this.state
+    let count = 0
+    while(count <= 4) {
+      let playerships = Math.floor(Math.random() * 60)
+      player1Ships.push(playerships)
+      count++
+    }
+    let count2 = 0
+    while(count2 <= 4) {
+      let playerships = Math.floor(Math.random() * 60)
+      player2Ships.push(playerships)
+      count2++
+    }
+    console.log(player1Ships, player2Ships)
+    this.setState({
+      player1Ships: player1Ships,
+      player2Ships: player2Ships
+    })
   }
 
   render() {
