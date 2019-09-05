@@ -11,6 +11,8 @@ class GameBoard extends React.Component {
     player2Icon: 'P2',
     player1Ships: [],
     player2Ships: [],
+    player2Hit: [],
+    player1Hit: []
   }
 
   userClick = (event) => {
@@ -19,9 +21,10 @@ class GameBoard extends React.Component {
     let player1turn = player1 === true ? false : true
     let samePick = playerPicks.filter((pick) => pick === squareId)
     if(player1turn === true) {
-      if(!samePick.includes(squareId)) {
+      if(!samePick.includes(squareId) && spaces[squareId] !== player2Icon) {
         playerTurn = "Player 1 clicked"
         playerPicks.push(squareId)
+        this.shipHitHandler(event)
         spaces[squareId] = player1Icon
       } else {
         player1turn = false
@@ -30,21 +33,37 @@ class GameBoard extends React.Component {
     } else {
       if(!samePick.includes(squareId)) {
         playerTurn = "Player 2 clicked"
-        playerPicks.push(squareId)
+        playerPicks.push(event)
+        this.shipHitHandler(event)
         spaces[squareId] = player2Icon
       } else {
         playerTurn = "Player 2 clicked"
         player1turn = true
       }
     }
-    console.log(playerTurn, squareId, samePick)
-    console.log(playerPicks)
+    // console.log(player1hit, player2hit, player2Ships)
+    // console.log(playerTurn, squareId, samePick)
+    // console.log(playerPicks)
     this.setState({
       player1: player1turn,
       playerTurn: playerTurn,
       player1Icon: player1Icon,
       player2Icon: player2Icon
     })
+  }
+
+  shipHitHandler = (event) => {
+    let squareId = parseInt(event.target.id)
+    let { player1Ships, player2Ships, player1Hit, player2Hit, player1Icon, player2Icon} = this.state
+    let player1hit = player1Ships.filter((hit) => hit === squareId)
+    let player2hit = player2Ships.filter((hit) => hit === squareId)
+    let p1ownship = player1Hit.filter((hit) => hit === player1hit)
+    if(p1ownship === true ) {
+      console.log('p1 own ship')
+    } else {
+      console.log('missed')
+    }
+    console.log(player1hit, player2hit, p1ownship)
   }
 
   spacesGenerator = (item, times) => {
@@ -55,12 +74,12 @@ class GameBoard extends React.Component {
     }
   }
 
-  componentDidMount = (event) => {
+  componentDidMount = () => {
     this.spacesGenerator('', 60)
     this.getPlayerShips()
   }
 
-  getPlayerShips = (event) => {
+  getPlayerShips = () => {
     let { player1Ships, player2Ships } = this.state
     let count = 0
     while(count <= 4) {
