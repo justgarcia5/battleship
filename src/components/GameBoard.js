@@ -54,17 +54,16 @@ class GameBoard extends React.Component {
 
   shipHitHandler = (event) => {
     let squareId = parseInt(event.target.id)
-    let { player1Ships, player2Ships, player1Hit, player2Hit} = this.state
+    let { player1Ships, player2Ships, player1Hit, player2Hit, player1Icon, player2Icon} = this.state
     let player1hit = player1Ships.filter((hit) => hit === squareId)
     let player2hit = player2Ships.filter((hit) => hit === squareId)
-    if(player1hit === true) {
-      console.log('Player1 own ship')
+    let p1ownship = player1Hit.filter((hit) => hit === player1hit)
+    if(p1ownship === true ) {
+      console.log('p1 own ship')
     } else {
-      console.log('Fire')
+      console.log('missed')
     }
-
-    console.log(player1Ships, player2Ships)
-    console.log(player1hit, player2hit)
+    console.log(player1hit, player2hit, p1ownship)
   }
 
   spacesGenerator = (item, times) => {
