@@ -33,7 +33,7 @@ class GameBoard extends React.Component {
     } else {
       if(!samePick.includes(squareId)) {
         playerTurn = "Player 2 clicked"
-        playerPicks.push(event)
+        playerPicks.push(squareId)
         this.shipHitHandler(event)
         spaces[squareId] = player2Icon
       } else {
@@ -53,17 +53,12 @@ class GameBoard extends React.Component {
   }
 
   shipHitHandler = (event) => {
-    let squareId = parseInt(event.target.id)
-    let { player1Ships, player2Ships, player1Hit, player2Hit, player1Icon, player2Icon} = this.state
-    let player1hit = player1Ships.filter((hit) => hit === squareId)
-    let player2hit = player2Ships.filter((hit) => hit === squareId)
-    let p1ownship = player1Hit.filter((hit) => hit === player1hit)
-    if(p1ownship === true ) {
-      console.log('p1 own ship')
-    } else {
-      console.log('missed')
-    }
-    console.log(player1hit, player2hit, p1ownship)
+    // let squareId = parseInt(event.target.id)
+    // let { player1Ships, player2Ships, player1Hit, playerPicks, player2Hit, player1Icon, player2Icon } = this.state
+    let { playerPicks } = this.state
+    // let player1ship = player1Ships.filter((ship) => ship === squareId)
+    // let player2ship = player2Ships.filter((ship) => ship === squareId)
+    console.log(playerPicks)
   }
 
   spacesGenerator = (item, times) => {
@@ -93,7 +88,6 @@ class GameBoard extends React.Component {
       player2Ships.push(playerships)
       count2++
     }
-    console.log(player1Ships, player2Ships)
     this.setState({
       player1Ships: player1Ships,
       player2Ships: player2Ships
